@@ -15,7 +15,7 @@ def contacts(request):
             phone = request.POST.get('phone')
             message = request.POST.get('message')
             file.write(f"Имя пользователя : {name}\nТелефон: {phone}\nСообщение: {message}\n")
-            print(name, phone, message)
+            print(f"Имя пользователя : {name}\nТелефон: {phone}\nСообщение: {message}\n")
 
 
     return render(request, 'catalog/contacts.html')
