@@ -1,0 +1,124 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Самсунг",
+      "description": "Очень мощный ноутбук для игр",
+      "image": "",
+      "category": 1,
+      "price": 78000,
+      "created_at": "2024-08-06T22:44:20.761Z",
+      "updated_at": "2024-08-06T22:44:20.761Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Леново",
+      "description": "",
+      "image": "",
+      "category": 1,
+      "price": 55000,
+      "created_at": "2024-08-06T22:53:22.808Z",
+      "updated_at": "2024-08-06T22:53:22.808Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Гигабить",
+      "description": "",
+      "image": "",
+      "category": 2,
+      "price": 12000,
+      "created_at": "2024-08-06T22:53:46.280Z",
+      "updated_at": "2024-08-06T22:53:46.280Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "Самсунг е115",
+      "description": "монито 27 дюймов",
+      "image": "",
+      "category": 2,
+      "price": 16000,
+      "created_at": "2024-08-06T22:54:48.082Z",
+      "updated_at": "2024-08-06T22:54:48.082Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "name": "Хонор 2708",
+      "description": "Монитор 144 герца 27 дюймов",
+      "image": "",
+      "category": 2,
+      "price": 21000,
+      "created_at": "2024-08-06T22:55:43.019Z",
+      "updated_at": "2024-08-06T22:55:43.019Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "name": "Асус Вивобук",
+      "description": "Этот ноутбук укомплектован производительным процессором Интел",
+      "image": "",
+      "category": 1,
+      "price": 20000,
+      "created_at": "2024-08-12T19:35:37.857Z",
+      "updated_at": "2024-08-12T19:35:37.857Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 7,
+    "fields": {
+      "name": "Iphone 15pro",
+      "description": "передовое устройство с корпусом из лёгкого и устойчивого к повреждениям титана",
+      "image": "",
+      "category": 3,
+      "price": 100000,
+      "created_at": "2024-08-12T19:39:59.116Z",
+      "updated_at": "2024-08-12T19:39:59.116Z",
+      "manufactured_at": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Ноутбуки",
+      "description": ""
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Мониторы",
+      "description": "мониторы от 27 дюмов"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Телефоны",
+      "description": "категория для телефонов и смартфонов"
+    }
+  }
+]
