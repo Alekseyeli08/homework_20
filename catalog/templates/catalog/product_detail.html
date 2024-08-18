@@ -1,0 +1,31 @@
+{% extends 'catalog/home.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img src="{{ product.image| media_filter }}">
+                    <div class="card-body">
+                        <p class="card-text">Модель: {{ product.name }}.</p>
+                        <p class="card-text"><small class="text-body-secondary">Описание: {{ product.description}}</small></p>
+                        <p class="card-text">Категория: {{ product.category }}.</p>
+                        <p class="card-text">Дата создания: {{ product.created_at }}.</p>
+                        <p class="card-text">Дата изменения: {{ product.updated_at }}.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a class="btn btn-primary" href="{% url 'catalog:home' %}" role="button">Назад</a>
+                            </div>
+                             <small class="text-body-danger">Цена: {{ product.price }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
