@@ -32,3 +32,4 @@ def add_product(request):
 # def add_bd_prod(request):
 #     if request.method == 'POST':
 #         new_product = Product.object.create(name='name', description='description', image='image', )
+#         return  new_product
