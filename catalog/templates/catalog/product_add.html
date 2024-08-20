@@ -23,46 +23,37 @@
                 {% csrf_token %}
                 <div class="mb-4">
                     <label for="name">Наименование товара</label>
-                    <input type="text" name="name_product" class="form-control" id="name"
+                    <input type="text" name="name" class="form-control" id="name"
                            placeholder="Введите название модели"
                            required>
                 </div>
                 <div class="mb-4">
                     <label for="phone">Категория</label>
-                    <input type="text" name="phone" class="form-control" id="phone"
+                    <input type="text" name="category" class="form-control" id="phone"
                            placeholder="Напишите название категории(к примеру 'Ноутбуки')" required>
                 </div>
                 <div class="mb-4">
                     <label for="message">Описание товара</label>
-                    <textarea type="text" name="message" class="form-control" id="message"
+                    <textarea type="text" name="description" class="form-control" id="message"
                               placeholder="Введите описание модели" required></textarea>
 
 
                 </div>
 
                 <div class="input-group mb-4">
-                    <input type="file" class="form-control" id="inputGroupFile02">
+                    <input type="file" name="image" class="form-control" id="inputGroupFile02">
                     <label class="input-group-text" for="inputGroupFile02">Загрузить</label>
                 </div>
 
-                <div class="md-4">
-                    <label for="country" class="form-label">Категории</label>
-                    <select class="form-select" id="country" required>
-                        <option value="">Не работает...</option>
-                        <option></option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please select a valid country.
-                    </div>
-                </div>
+
 
                 <div class="md-12">
-                    <label for="start">Дата создания:</label>
-                    <input type="date" id="start" name="trip-start" value="2024-08-20" min="2024-08-20"
+                    <label for="created_at">Дата создания:</label>
+                    <input type="date" id="created_at" name="trip-start" value="2024-08-20" min="2024-08-20"
                            max="2026-12-31"/>
 
-                    <label for="start">Дата Изменения:</label>
-                    <input type="date" id="update" name="trip-start" value="2024-08-20" min="2024-08-20"
+                    <label for="updated_at">Дата Изменения:</label>
+                    <input type="date" id="updated_at" name="trip-start" value="2024-08-20" min="2024-08-20"
                            max="2026-12-31"/>
 
                 </div>

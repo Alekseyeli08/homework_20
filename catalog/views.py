@@ -25,11 +25,20 @@ def product_detail(request, pk):
     return render(request, 'catalog/product_detail.html', context)
 
 
+
+
+
 def add_product(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        category = request.POST.get('category')
+        created_at = request.POST.get('created_at')
+        updated_at = request.POST.get('updated_at')
+        context = Product.objects.create(name=name, description=description, category_id=category, created_at=created_at, updated_at=updated_at)
+        return render(request, 'catalog/product_add.html', context)
+
     return render(request, 'catalog/product_add.html')
 
-
-# def add_bd_prod(request):
-#     if request.method == 'POST':
-#         new_product = Product.object.create(name='name', description='description', image='image', )
-#         return  new_product
+# def add_product(request):
+#     return render(request, 'catalog/product_add.html')
