@@ -2,41 +2,92 @@
 {% load my_tags %}
 {% block content %}
 <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">ElectronicStore</h1>
-            <p class="lead text-muted">Наш интернет магазин занимается прожашей всей электроники по низким ценнам.</p>
-            <p>
-                <a href="#" class="btn btn-primary my-2"><i class="bi bi-android"></i>О нас</a>
-            </p>
-        </div>
-    </section>
+    <div class="container">
+        <h1 class="jumbotron-heading">ElectronicStore</h1>
+        <p class="lead text-muted">Наш интернет магазин занимается прожашей всей электроники по низким ценнам.</p>
+        <p>
+            <a href="#" class="btn btn-primary my-2"><i class="bi bi-android"></i>О нас</a>
+        </p>
+    </div>
+</section>
 
 <div class="album py-5 bg-light">
     <div class="container">
-
         <div class="row">
-            {% for prod in product %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only"></span>
+                    </a>
+                    {% endif %}
+                    {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                    <li class="page-item active">
+                        <a class="page-link"><span class="sr-only">{{ p }}</span></a>
+                    </li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <li class="page-link"><a href="?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only"></span>
+                    </a>
+                    {% endif %}
+                </ul>
+            </nav>
+
+
+            {% for prod in object_list %}
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
                     <img src="{{ prod.image| media_filter }}">
                     <div class="card-body">
-                        <p class="card-text">Модель: {{ prod.name }}.</p>
+                        <p class="card-text">Модель: {{ prod.name }}</p>
                         <p class="card-text"><small class="text-body-secondary">Описание: {{ prod.description|truncatechars:100 }}</small></p>
                         <p class="card-text">Категория: {{ prod.category }}.</p>
-                        <p class="card-text">Дата создания: {{ prod.created_at }}.</p>
-                        <p class="card-text">Дата изменения: {{ prod.updated_at }}.</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="{% url 'catalog:product_detail' prod.pk %}" role="button">Посмотреть</a>
+                                <a class="btn btn-sm btn-outline-primary"
+                                   href="{% url 'catalog:product_detail' prod.pk %}" role="button">Посмотреть</a>
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'catalog:product_update' prod.pk %}" role="button">Редактировать</a>
+                                <a class="btn btn-sm btn-outline-primary" href="{% url 'catalog:product_delete' prod.pk %}" role="button">Удалить</a>
                             </div>
-                             <small class="text-body-danger">Цена: {{ prod.price }}</small>
+                            <small class="text-body-danger">Цена: {{ prod.price }}</small>
                         </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+                {% endif %}
+                {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                <li class="page-item active">
+                    <a class="page-link"><span class="sr-only">{{ p }}</span></a>
+                </li>
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                <li class="page-link"><a href="?page={{ p }}">{{ p }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 {% endblock %}

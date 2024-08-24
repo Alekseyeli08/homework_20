@@ -33,7 +33,8 @@
                         <li><a href="{% url 'catalog:home' %}" class="text-white">Главная</a></li>
                         <li><a href="/contacts/" class="text-white">Контакы</a></li>
                         <li><a href="#" class="text-white">Регистрация</a></li>
-                         <li><a href="{% url 'catalog:add_product' %}" class="text-white">Добавление товара</a></li>
+                        <li><a href="{% url 'catalog:product_create' %}" class="text-white">Добавление товара</a></li>
+                        <li><a href="{% url 'blog:blog_list' %}" class="text-white">Блог</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,6 +58,7 @@
 
     {% block content %}
     {% endblock %}
+
 
 
 </main>

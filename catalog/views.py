@@ -1,12 +1,12 @@
 from django.shortcuts import render
-
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from catalog.models import Product
+from django.urls import reverse_lazy
 
+class ProductListView(ListView):
+    paginate_by: int = 6
+    model = Product
 
-def home(request):
-    product = Product.objects.all()
-    context = {'product': product}
-    return render(request, 'catalog/product_list.html', context)
 
 
 def contacts(request):
@@ -19,26 +19,20 @@ def contacts(request):
     return render(request, 'catalog/contacts.html')
 
 
-def product_detail(request, pk):
-    product = Product.objects.get(pk=pk)
-    context = {'product': product}
-    return render(request, 'catalog/product_detail.html', context)
+class ProductDetailView(DetailView):
+    model = Product
 
 
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ("name", "description", "image", "category", "price")
+    success_url = reverse_lazy("catalog:home")
 
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ("name", "description", "image", "category", "price")
+    success_url = reverse_lazy("catalog:home")
 
-
-def add_product(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        category = request.POST.get('category')
-        created_at = request.POST.get('created_at')
-        updated_at = request.POST.get('updated_at')
-        context = Product.objects.create(name=name, description=description, category_id=category, created_at=created_at, updated_at=updated_at)
-        return render(request, 'catalog/product_add.html', context)
-
-    return render(request, 'catalog/product_add.html')
-
-# def add_product(request):
-#     return render(request, 'catalog/product_add.html')
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy("catalog:home")
