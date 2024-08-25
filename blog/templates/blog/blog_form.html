@@ -2,39 +2,36 @@
 {% load my_tags %}
 {% block content %}
 <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">ElectronicStore</h1>
-            <p class="lead text-muted">Добавьте запись. Страница для добавление блоговой записи</p>
+    <div class="container">
+        <h1 class="jumbotron-heading">ElectronicStore</h1>
+        <p class="lead text-muted">Добавьте запись. Страница для добавление блоговой записи</p>
 
-        </div>
-    </section>
-
+    </div>
+</section>
 
 
 <div class="container px-12">
-    <main>
-
-        <div class="py-6 text-center">
-            <h2>Добавьте блоговую запись</h2>
-            <p class="lead">Заполните все поля.</p>
-        </div>
-
-        <div class="input-group mb-3">
-            <form method="post" enctype="multipart/form-data">
-                <label class="input-group-text">
-                {% csrf_token %}
-                {{ form.as_p }}</label>
-        </div>
+    <div class="py-6 text-center">
+        <h2>Добавьте блоговую запись</h2>
+        <p class="lead">Заполните все поля.</p>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <form class="row" method="post" enctype="multipart/form-data">
+                <div class="card ">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
                 <button type="submit" class="btn btn-lg btn-block btn-outline-primary">
                     {% if object %}
-                    Отправить
+                    Сохранить
                     {% else %}
                     Создать
                     {% endif %}
                 </button>
             </form>
         </div>
-    </main>
+    </div>
 </div>
 {% endblock %}
 
