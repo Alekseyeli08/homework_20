@@ -37,6 +37,11 @@ class BlogListView(ListView):
     paginate_by: int = 6
     model = Blog
 
+    def get_queryset(self, *args, **kwargs):
+        qyryset = super().get_queryset(*args, **kwargs)
+        qyryset = qyryset.filter(is_published=True)
+        return qyryset
+
 class BlogDetailView(DetailView):
     model = Blog
 
