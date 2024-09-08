@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy,reverse
+from django.urls import reverse_lazy, reverse
 from blog.models import Blog
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
+
 
 class BlogCreateView(CreateView):
     model = Blog
@@ -21,7 +22,6 @@ class BlogUpdateView(UpdateView):
     model = Blog
     fields = ('title', 'content', 'image')
 
-
     def form_valid(self, form):
         if form.is_valid():
             new_mat = form.save()
@@ -33,6 +33,22 @@ class BlogUpdateView(UpdateView):
         return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
 
 
+class Blog2ListView(ListView):
+    paginate_by: int = 6
+    model = Blog
+
+    def get_queryset(self, *args, **kwargs):
+        qyryset = super().get_queryset(*args, **kwargs)
+        qyryset = qyryset.filter(is_published=False)
+        return qyryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active'] = ''
+        context['inactive'] = 'active'
+        return context
+
+
 class BlogListView(ListView):
     paginate_by: int = 6
     model = Blog
@@ -42,9 +58,15 @@ class BlogListView(ListView):
         qyryset = qyryset.filter(is_published=True)
         return qyryset
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active'] = 'active'
+        context['inactive'] = ''
+        return context
+
+
 class BlogDetailView(DetailView):
     model = Blog
-
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -57,7 +79,6 @@ class BlogDeleteView(DeleteView):
     model = Blog
     fields = ('title', 'content', 'image')
     success_url = reverse_lazy('blog:blog_list')
-
 
 
 def is_published(request, pk):

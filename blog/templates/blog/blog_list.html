@@ -10,6 +10,17 @@
     </div>
 </section>
 
+
+<ul class="nav nav-pills justify-content-center">
+  <li class="nav-item">
+
+    <a class="nav-link {{ active }}" aria-current="page" href="{% url 'blog:blog_list' %}">Активные</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {{ inactive }}" href="{% url 'blog:blog_list2' %}">Неактивные</a>
+  </li>
+</ul>
+
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">

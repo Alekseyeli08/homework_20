@@ -2,39 +2,63 @@
 {% load my_tags %}
 {% block content %}
 <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">ElectronicStore</h1>
-            <p class="lead text-muted">Данная страница для добавления товара. Пройдите все шаги</p>
+    <div class="container">
+        <h1 class="jumbotron-heading">ElectronicStore</h1>
+        <p class="lead text-muted">Данная страница для добавления товара. Пройдите все шаги</p>
 
-        </div>
-    </section>
-
+    </div>
+</section>
 
 
 <div class="container px-12">
-    <main>
-
-        <div class="py-6 text-center">
-            <h2>Страница для добавления товаров</h2>
-            <p class="lead">Заполните все поля.</p>
-        </div>
-
-        <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
+    <div class="py-6 text-center">
+        {% if object %}
+        <h2>Страница для редактирования товаров</h2>
+        <p class="lead">Заполните все поля.</p>
+        {% else %}
+        <h2>Страница для добавления товаров</h2>
+        <p class="lead">Заполните все поля.</p>
+        {% endif %}
+    </div>
+    <form class="row" method="post" enctype="multipart/form-data">
+        <div class="col-6">
+            <div class="card">
                 <div class="card-body">
-                {% csrf_token %}
-                {{ form.as_p }}
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">
+                        {% if object %}
+                        Сохранить
+                        {% else %}
+                        Создать
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
         </div>
-                <button type="submit" class="btn btn-lg btn-block btn-outline-primary">
-                    {% if object %}
-                    Отправить
-                    {% else %}
-                    Создать
-                    {% endif %}
-                </button>
-            </form>
+        {% if object %}
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                    {{ form.as_p }}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </main>
+        {% else %}
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text"> Для добавлении версии добавьте товар</p>
+                </div>
+            </div>
+            {% endif %}
+    </form>
+</div>
 </div>
 {% endblock %}
 

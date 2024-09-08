@@ -64,3 +64,26 @@ class Category(models.Model):
     def truncate_table_restart_id(cls):
         with connection.cursor() as cursor:
             cursor.execute(f'TRUNCATE TABLE {cls._meta.db_table} RESTART IDENTITY CASCADE')
+
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product,
+        related_name="versions",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='продукт'
+    )
+
+    version_number = models.IntegerField(default=0, verbose_name='номер версии')
+    version_name = models.TextField(verbose_name='название версии')
+    version_indicator = models.BooleanField(default=True, verbose_name='актуалная версия')
+
+    class Meta:
+        verbose_name = 'Верссия'
+        verbose_name_plural = 'Версии'
+
+
+    def __str__(self):
+        return self.version_name
