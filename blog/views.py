@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from blog.models import Blog
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
-
+from blog.forms import BlogForm
 
 class BlogCreateView(CreateView):
     model = Blog
@@ -20,7 +20,7 @@ class BlogCreateView(CreateView):
 
 class BlogUpdateView(UpdateView):
     model = Blog
-    fields = ('title', 'content', 'image')
+    form_class = BlogForm
 
     def form_valid(self, form):
         if form.is_valid():

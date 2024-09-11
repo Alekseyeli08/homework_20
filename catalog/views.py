@@ -4,10 +4,12 @@ from django.forms import inlineformset_factory
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProductListView(ListView):
     paginate_by: int = 6
     model = Product
+
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
@@ -36,10 +38,18 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(CreateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
+
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.autor = user
+        product.save()
+        return super().form_valid(form)
+
 
 class ProductUpdateView(UpdateView):
     model = Product

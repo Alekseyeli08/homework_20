@@ -30,6 +30,7 @@ class Product(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
+    autor = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='автор', blank=True, null=True)
 
     class Meta:
         verbose_name = "Товар"
