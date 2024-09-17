@@ -2,13 +2,15 @@ import secrets
 import random
 import string
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from users.models import User
 from django.urls import reverse_lazy,reverse
-from users.forms import UserRegisterForm
+from users.forms import UserRegisterForm, UserProfileForm
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class UserCreateView(CreateView):
     model = User
@@ -31,13 +33,14 @@ class UserCreateView(CreateView):
         )
         return super().form_valid(form)
 
+@login_required
 def email_verification(request, token):
     user = get_object_or_404(User, token=token)
     user.is_active = True
     user.save()
     return redirect(reverse("users:login"))
 
-
+@login_required
 def recovery_password(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -61,3 +64,10 @@ def recovery_password(request):
     return render(request, template_name='users/recovery_password.html')
 
 
+class ProfileView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user

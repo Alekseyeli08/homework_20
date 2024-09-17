@@ -2,6 +2,8 @@ from django.db import models, connection
 
 
 class Product(models.Model):
+    PRODUCT_CHOICES = (('ACTIVE', 'активный'), ('INACTIVE', 'неактивный'))
+
     name = models.CharField(
         max_length=150,
         verbose_name="Наименование товара",
@@ -31,11 +33,18 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
     autor = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='автор', blank=True, null=True)
+    is_published = models.CharField(max_length=20, choices=PRODUCT_CHOICES, default='INACTIVE',
+                                    verbose_name='публикация')
 
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ['id']
+        permissions = [
+            ("can_edit_is_published", "can edit is_published"),
+            ("can_edit_description", "can edit description"),
+            ("can_edit_category", "can edir category")
+        ]
 
     def __str__(self):
         return self.name
@@ -67,15 +76,14 @@ class Category(models.Model):
             cursor.execute(f'TRUNCATE TABLE {cls._meta.db_table} RESTART IDENTITY CASCADE')
 
 
-
 class Version(models.Model):
     product = models.ForeignKey(Product,
-        related_name="versions",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name='продукт'
-    )
+                                related_name="versions",
+                                on_delete=models.SET_NULL,
+                                null=True,
+                                blank=True,
+                                verbose_name='продукт'
+                                )
 
     version_number = models.IntegerField(default=0, verbose_name='номер версии')
     version_name = models.TextField(verbose_name='название версии')
@@ -84,7 +92,6 @@ class Version(models.Model):
     class Meta:
         verbose_name = 'Верссия'
         verbose_name_plural = 'Версии'
-
 
     def __str__(self):
         return self.version_name

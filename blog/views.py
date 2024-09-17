@@ -4,8 +4,10 @@ from blog.models import Blog
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
 from blog.forms import BlogForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     fields = ('title', 'content', 'image')
     success_url = reverse_lazy('blog:blog_list')
@@ -18,7 +20,7 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     form_class = BlogForm
 
@@ -33,7 +35,7 @@ class BlogUpdateView(UpdateView):
         return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
 
 
-class Blog2ListView(ListView):
+class Blog2ListView(LoginRequiredMixin, ListView):
     paginate_by: int = 6
     model = Blog
 
@@ -49,7 +51,7 @@ class Blog2ListView(ListView):
         return context
 
 
-class BlogListView(ListView):
+class BlogListView(LoginRequiredMixin, ListView):
     paginate_by: int = 6
     model = Blog
 
@@ -65,7 +67,7 @@ class BlogListView(ListView):
         return context
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(LoginRequiredMixin, DetailView):
     model = Blog
 
     def get_object(self, queryset=None):
@@ -75,12 +77,12 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = Blog
     fields = ('title', 'content', 'image')
     success_url = reverse_lazy('blog:blog_list')
 
-
+@login_required
 def is_published(request, pk):
     is_published_blog = get_object_or_404(Blog, pk=pk)
     if is_published_blog:

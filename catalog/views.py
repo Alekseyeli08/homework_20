@@ -1,15 +1,29 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.forms import inlineformset_factory
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 
-class ProductListView(ListView):
+
+@login_required
+def contacts(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        print(f"Имя пользователя : {name}\nТелефон: {phone}\nСообщение: {message}\n")
+
+    return render(request, 'catalog/contacts.html')
+
+
+
+class ProductListView(LoginRequiredMixin, ListView):
     paginate_by: int = 6
     model = Product
-
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
@@ -24,21 +38,20 @@ class ProductListView(ListView):
         context_data['object_list'] = products
         return context_data
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f"Имя пользователя : {name}\nТелефон: {phone}\nСообщение: {message}\n")
-
-    return render(request, 'catalog/contacts.html')
+    def get_queryset(self, *args, **kwargs):
+        qyryset = super().get_queryset(*args, **kwargs)
+        qyryset = qyryset.filter(is_published='ACTIVE')
+        return qyryset
 
 
-class ProductDetailView(DetailView):
+
+
+class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Product
+    permission_required = 'catalog.view_product'
 
 
-class ProductCreateView(CreateView, LoginRequiredMixin):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
@@ -51,11 +64,10 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
-
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -77,8 +89,16 @@ class ProductUpdateView(UpdateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.autor:
+            return ProductForm
+        if user.has_perm("catalog.can_edit_is_published") and user.has_perm("catalog.can_edit_description") and user.has_perm("catalog.can_edit_category"):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
+    permission_required = 'catalog.delete_product'

@@ -49,3 +49,8 @@ class VersionForm(StyleFormMixin, ModelForm):
             if active_version.exists():
                 raise ValidationError('Может быть одна активная версия')
         return super().clean()
+
+class ProductModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = ("is_published", "category", "description")

@@ -53,12 +53,18 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
+                                {% if perms.catalog.view_product %}
                                 <a class="btn btn-sm btn-outline-primary"
                                    href="{% url 'catalog:product_detail' prod.pk %}" role="button">Посмотреть</a>
+                                {% endif %}
+                                {% if perms.catalog.can_edit_is_published and perms.catalog.can_edit_description and perms.catalog.can_edit_category or user == prod.autor %}
                                 <a class="btn btn-sm btn-outline-primary"
                                    href="{% url 'catalog:product_update' prod.pk %}" role="button">Редактировать</a>
+                                {% endif %}
+                                {% if perms.catalog.delete_product %}
                                 <a class="btn btn-sm btn-outline-primary"
                                    href="{% url 'catalog:product_delete' prod.pk %}" role="button">Удалить</a>
+                                {% endif %}
                             </div>
                             <small class="text-body-danger">Цена: {{ prod.price }}</small>
                         </div>
