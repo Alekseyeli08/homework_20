@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.forms import inlineformset_factory
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
-
+from catalog.services import get_category_from_cache
 
 @login_required
 def contacts(request):
@@ -42,8 +42,6 @@ class ProductListView(LoginRequiredMixin, ListView):
         qyryset = super().get_queryset(*args, **kwargs)
         qyryset = qyryset.filter(is_published='ACTIVE')
         return qyryset
-
-
 
 
 class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -102,3 +100,10 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     model = Product
     success_url = reverse_lazy("catalog:home")
     permission_required = 'catalog.delete_product'
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+
+    def get_queryset(self):
+        return get_category_from_cache()

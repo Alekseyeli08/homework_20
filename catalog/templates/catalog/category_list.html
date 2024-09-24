@@ -1,0 +1,30 @@
+{% extends 'catalog/home.html' %}
+{% block content %}
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">ElectronicStore</h1>
+        <p class="lead text-muted">Наши категории.</p>
+        <p>
+            <a href="#" class="btn btn-primary my-2"><i class="bi bi-android"></i>О нас</a>
+        </p>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+
+            {% for category in object_list %}
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-body">
+                        <p class="card-text">Категория: {{ category.name }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Описание: {{ category.description|truncatechars:100 }}</small></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
